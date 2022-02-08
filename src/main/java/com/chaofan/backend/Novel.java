@@ -1,4 +1,4 @@
-package com.chao.backend;
+package com.chaofan.backend;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

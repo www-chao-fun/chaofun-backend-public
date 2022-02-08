@@ -1,4 +1,4 @@
-package com.chao.backend;
+package com.chaofan.backend;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -6,12 +6,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -58,8 +56,8 @@ public class AutoChaoFun {
     public static void getLastCommentPost() {
         List<JSONObject> posts = getPostList("https://chao.fun/api/v0/list_combine?onlyNew=false&pageSize=30&order=comment&range=1year&forumId=all");
         for (JSONObject post : posts) {
-            if (post.getLong("gmtCreate").compareTo(newPostCurrentTimestamp) > 0) {
-                newPostCurrentTimestamp = post.getLong("gmtCreate");
+            if (post.getLong("gmtComment").compareTo(newPostCurrentTimestamp) > 0) {
+                newPostCurrentTimestamp = post.getLong("gmtComment");
                 newPostId = post.getLong("postId");
             }
         }
