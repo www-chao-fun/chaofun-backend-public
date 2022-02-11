@@ -2,6 +2,7 @@ package com.chaofan.backend;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 炒饭直播漫游工具
  */
+@Slf4j
 public class AutoChaoFun {
 
     static ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(20);
@@ -44,22 +46,30 @@ public class AutoChaoFun {
     }
 
     public static void getLastPost() {
-        List<JSONObject> posts = getPostList("https://chao.fun/api/v0/list_combine?onlyNew=false&pageSize=5&marker=&order=new&range=1year&forumId=all");
-        for (JSONObject post : posts) {
-            if (post.getLong("gmtCreate").compareTo(newPostCurrentTimestamp) > 0) {
-                newPostCurrentTimestamp = post.getLong("gmtCreate");
-                newPostId = post.getLong("postId");
+        try {
+            List<JSONObject> posts = getPostList("https://chao.fun/api/v0/list_combine?onlyNew=false&pageSize=5&marker=&order=new&range=1year&forumId=all");
+            for (JSONObject post : posts) {
+                if (post.getLong("gmtCreate").compareTo(newPostCurrentTimestamp) > 0) {
+                    newPostCurrentTimestamp = post.getLong("gmtCreate");
+                    newPostId = post.getLong("postId");
+                }
             }
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
         }
     }
 
     public static void getLastCommentPost() {
-        List<JSONObject> posts = getPostList("https://chao.fun/api/v0/list_combine?onlyNew=false&pageSize=30&order=comment&range=1year&forumId=all");
-        for (JSONObject post : posts) {
-            if (post.getLong("gmtComment").compareTo(newPostCurrentTimestamp) > 0) {
-                newPostCurrentTimestamp = post.getLong("gmtComment");
-                newPostId = post.getLong("postId");
+        try {
+            List<JSONObject> posts = getPostList("https://chao.fun/api/v0/list_combine?onlyNew=false&pageSize=30&order=comment&range=1year&forumId=all");
+            for (JSONObject post : posts) {
+                if (post.getLong("gmtComment").compareTo(newPostCurrentTimestamp) > 0) {
+                    newPostCurrentTimestamp = post.getLong("gmtComment");
+                    newPostId = post.getLong("postId");
+                }
             }
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
         }
     }
 
